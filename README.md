@@ -38,23 +38,22 @@ export OPENFAAS_PREFIX="ttl.sh/alexellis"
 
 ## Publish and deploy
 
-### Option A: image tag from env var
-
-```bash
-faas-cli up -f stack.yml
-```
-
-### Option B: override tag at publish/deploy time
+### Option A: override tag at publish/deploy time
 
 ```bash
 faas-cli up -f stack.yml --tag digest
+```
+
+### Option B: image tag from env var / default in `stack.yml`
+
+```bash
+faas-cli up -f stack.yml
 ```
 
 ## Send 10 test requests in capacity mode
 
 ```bash
 FUNCTION_NAME=customer-processor-capacity \
-  OPENFAAS_URL="https://your-gateway.example.com" \
   MODE=async \
   REQUESTS=10 \
   PROCESSING_TIME=4 \
@@ -69,7 +68,6 @@ This requires `jetstreamQueueWorker.mode` to be set to `function` and not `stati
 
 ```bash
 FUNCTION_NAME=customer-processor-queue \
-  OPENFAAS_URL="https://your-gateway.example.com" \
   MODE=async \
   REQUESTS=10 \
   PROCESSING_TIME=4 \

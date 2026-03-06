@@ -58,12 +58,39 @@ faas-cli up -f stack.yml
 
 The [stern](https://github.com/wercker/stern) tool can be used to tail logs from multiple pods in real-time. stern is available via direct download, or via `arkade install stern`, and may be available via `brew install stern` on macOS.
 
-Unlikely `kubectl`, if there is any scaling, `stern` will automatically attach to new pods as they are created, and detach from old pods as they are removed.
+Unlike `kubectl`, if there is any scaling, `stern` will automatically attach to new pods as they are created, and detach from old pods as they are removed.
 
 In one terminal, attach to all functions:
 
 ```
 stern -n openfaas-fn 'customer-processor.*' --since 1m | grep "START\|END" 
+```
+
+During the test run, you'll see output like:
+
+```
+customer-processor-capacity-6d99798576-rh9p9 customer-processor-capacity 2026/03/06 16:07:13 stdout: START customer=customer-05 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-rh9p9 started_at=2026-03-06T16:07:13.800711+00:00 inflight=1
+customer-processor-capacity-6d99798576-qfhxp customer-processor-capacity 2026/03/06 16:07:13 stdout: START customer=customer-03 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-qfhxp started_at=2026-03-06T16:07:13.800330+00:00 inflight=1
+customer-processor-capacity-6d99798576-wlqkm customer-processor-capacity 2026/03/06 16:07:13 stdout: START customer=customer-06 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-wlqkm started_at=2026-03-06T16:07:13.801923+00:00 inflight=1
+customer-processor-capacity-6d99798576-t9rkw customer-processor-capacity 2026/03/06 16:07:13 stdout: START customer=customer-01 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-t9rkw started_at=2026-03-06T16:07:13.800592+00:00 inflight=1
+customer-processor-capacity-6d99798576-qfhxp customer-processor-capacity 2026/03/06 16:07:17 stdout: END customer=customer-03 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-qfhxp completed_at=2026-03-06T16:07:17.804758+00:00 inflight=0
+customer-processor-capacity-6d99798576-wlqkm customer-processor-capacity 2026/03/06 16:07:17 stdout: END customer=customer-06 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-wlqkm completed_at=2026-03-06T16:07:17.804766+00:00 inflight=0
+customer-processor-capacity-6d99798576-rh9p9 customer-processor-capacity 2026/03/06 16:07:17 stdout: END customer=customer-05 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-rh9p9 completed_at=2026-03-06T16:07:17.805624+00:00 inflight=0
+customer-processor-capacity-6d99798576-t9rkw customer-processor-capacity 2026/03/06 16:07:17 stdout: END customer=customer-01 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-t9rkw completed_at=2026-03-06T16:07:17.804884+00:00 inflight=0
+customer-processor-capacity-6d99798576-wlqkm customer-processor-capacity 2026/03/06 16:07:19 stdout: START customer=customer-04 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-wlqkm started_at=2026-03-06T16:07:19.812472+00:00 inflight=1
+customer-processor-capacity-6d99798576-rh9p9 customer-processor-capacity 2026/03/06 16:07:19 stdout: START customer=customer-07 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-rh9p9 started_at=2026-03-06T16:07:19.819506+00:00 inflight=1
+customer-processor-capacity-6d99798576-t9rkw customer-processor-capacity 2026/03/06 16:07:19 stdout: START customer=customer-10 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-t9rkw started_at=2026-03-06T16:07:19.829080+00:00 inflight=1
+customer-processor-capacity-6d99798576-wlqkm customer-processor-capacity 2026/03/06 16:07:23 stdout: END customer=customer-04 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-wlqkm completed_at=2026-03-06T16:07:23.816177+00:00 inflight=0
+customer-processor-capacity-6d99798576-rh9p9 customer-processor-capacity 2026/03/06 16:07:23 stdout: END customer=customer-07 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-rh9p9 completed_at=2026-03-06T16:07:23.823894+00:00 inflight=0
+customer-processor-capacity-6d99798576-t9rkw customer-processor-capacity 2026/03/06 16:07:23 stdout: END customer=customer-10 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-t9rkw completed_at=2026-03-06T16:07:23.834180+00:00 inflight=0
+customer-processor-capacity-6d99798576-t9rkw customer-processor-capacity 2026/03/06 16:07:27 stdout: START customer=customer-08 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-t9rkw started_at=2026-03-06T16:07:27.818884+00:00 inflight=1
+customer-processor-capacity-6d99798576-qfhxp customer-processor-capacity 2026/03/06 16:07:27 stdout: START customer=customer-02 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-qfhxp started_at=2026-03-06T16:07:27.826463+00:00 inflight=1
+customer-processor-capacity-6d99798576-rh9p9 customer-processor-capacity 2026/03/06 16:07:27 stdout: START customer=customer-09 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-rh9p9 started_at=2026-03-06T16:07:27.837399+00:00 inflight=1
+customer-processor-capacity-6d99798576-t9rkw customer-processor-capacity 2026/03/06 16:07:31 stdout: END customer=customer-08 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-t9rkw completed_at=2026-03-06T16:07:31.823548+00:00 inflight=0
+customer-processor-capacity-6d99798576-qfhxp customer-processor-capacity 2026/03/06 16:07:31 stdout: END customer=customer-02 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-qfhxp completed_at=2026-03-06T16:07:31.829448+00:00 inflight=0
+customer-processor-capacity-6d99798576-rh9p9 customer-processor-capacity 2026/03/06 16:07:31 stdout: END customer=customer-09 processing_time=4.0s hostname=customer-processor-capacity-6d99798576-rh9p9 completed_at=2026-03-06T16:07:31.841823+00:00 inflight=0
+
+
 ```
 
 In another, attach to the queue-worker's recent activity for all replicas:

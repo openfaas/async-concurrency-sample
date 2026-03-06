@@ -8,6 +8,10 @@ Use-cases:
 * Functions that must isolate requests for individual customers or tenants (i.e. SIEM or CRM integrations).
 * Functions that need to handle long-running jobs with timeouts and retries (e.g. data processing or batch jobs).
 
+The below example shows two variants of the same function with different scaling modes: `capacity` or `queue-based` scaling.
+
+The sample function processes one customer record, and refuses concurrent work.
+
 ## Behavior
 
 - Input body is JSON: `customer_name` and `processing_time`.

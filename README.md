@@ -59,7 +59,7 @@ Unlikely `kubectl`, if there is any scaling, `stern` will automatically attach t
 In one terminal, attach to all functions:
 
 ```
-stern -n openfaas-fn 'customer-processor.*' --since 10m
+stern -n openfaas-fn 'customer-processor.*' --since 1m | grep "START\|END" 
 ```
 
 In another, attach to the queue-worker's recent activity for all replicas:

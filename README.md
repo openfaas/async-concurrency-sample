@@ -50,6 +50,32 @@ faas-cli up -f stack.yml --tag digest
 faas-cli up -f stack.yml
 ```
 
+## Start attaching to the logs
+
+The [stern](https://github.com/wercker/stern) tool can be used to tail logs from multiple pods in real-time. stern is available via direct download, or via `arkade install stern`, and may be available via `brew install stern` on macOS.
+
+Unlikely `kubectl`, if there is any scaling, `stern` will automatically attach to new pods as they are created, and detach from old pods as they are removed.
+
+In one terminal, attach to all functions:
+
+```
+stern -n openfaas-fn 'customer-processor.*' --since 10m
+```
+
+In another, attach to the queue-worker's recent activity for all replicas:
+
+```
+stern -n openfaas queue-worker --since 10m
+```
+
+If you don't have stern, after the test you can run one of the following, however it is less reliable, since if a Pod scales down before you can run the command, you won't see its output.
+
+```
+faas-cli logs customer-processor-capacity -f stack.yml --since 10m
+
+faas-cli logs customer-processor-queue -f stack.yml --since 10m
+```
+
 ## Send 10 test requests in capacity mode
 
 ```bash
@@ -84,14 +110,6 @@ PROCESSING_TIME_MODE=random-range \
 PROCESSING_TIME_MIN=60 \
 PROCESSING_TIME_MAX=180 \
 ./generate-requests.sh
-```
-
-## Logs
-
-```bash
-faas-cli logs customer-processor -f stack.yml --since 10m
-stern -n openfaas queue-worker --since 10m
-stern -n openfaas-fn 'customer-processor.*' --since 10m
 ```
 
 ## Pod count observed in load run

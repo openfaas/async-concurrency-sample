@@ -1,0 +1,51 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: ${OPENFAAS_URL}
+configuration:
+  templates:
+    - name: python3-http
+
+functions:
+  customer-processor-capacity:
+    lang: python3-http
+    handler: ./customer-processor
+    image: ${OPENFAAS_PREFIX:-ttl.sh/alexellis}/customer-processor-capacity:${OPENFAAS_TAG}
+    environment:
+      max_inflight: "1"
+      exec_timeout: 5m
+      read_timeout: 5m1s
+      write_timeout: 5m1s
+    labels:
+      com.openfaas.scale.min: "1"
+      com.openfaas.scale.max: "20"
+      com.openfaas.scale.target: "1"
+      com.openfaas.scale.type: capacity
+      com.openfaas.scale.target-proportion: "0.95"
+    annotations:
+      com.openfaas.retry.attempts: "100"
+      com.openfaas.retry.codes: "429,500,502,503,504,408"
+      com.openfaas.retry.min_wait: "1s"
+      com.openfaas.retry.max_wait: "60s"
+
+  customer-processor-queue:
+    lang: python3-http
+    handler: ./customer-processor
+    image: ${OPENFAAS_PREFIX:-ttl.sh/alexellis}/customer-processor-queue:${OPENFAAS_TAG}
+    environment:
+      max_inflight: "1"
+      exec_timeout: 5m
+      read_timeout: 5m1s
+      write_timeout: 5m1s
+    labels:
+      com.openfaas.scale.min: "1"
+      com.openfaas.scale.max: "20"
+      com.openfaas.scale.target: "1"
+      com.openfaas.scale.type: queue
+      com.openfaas.scale.mode: queue
+      com.openfaas.scale.target-proportion: "1"
+    annotations:
+      com.openfaas.retry.attempts: "100"
+      com.openfaas.retry.codes: "429,500,502,503,504,408"
+      com.openfaas.retry.min_wait: "1s"
+      com.openfaas.retry.max_wait: "60s"

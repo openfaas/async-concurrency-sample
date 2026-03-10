@@ -7,7 +7,7 @@ _inflight = 0
 _inflight_lock = threading.Lock()
 
 def handle(event, context):
-    if event.path in ("/ready", "/_/ready"):
+    if event.path == "/ready":
         return {
             "statusCode": 200,
             "body": {"ready": True, "hostname": context.hostname},

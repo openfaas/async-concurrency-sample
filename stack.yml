@@ -13,6 +13,7 @@ functions:
     image: ${OPENFAAS_PREFIX:-ttl.sh/alexellis}/customer-processor-capacity:${OPENFAAS_TAG:-latest}
     environment:
       max_inflight: "1"
+      ready_path: /ready
       exec_timeout: 5m
       read_timeout: 5m1s
       write_timeout: 5m1s
@@ -34,6 +35,7 @@ functions:
     image: ${OPENFAAS_PREFIX:-ttl.sh/alexellis}/customer-processor-queue:${OPENFAAS_TAG:-latest}
     environment:
       max_inflight: "1"
+      ready_path: /ready
       exec_timeout: 5m
       read_timeout: 5m1s
       write_timeout: 5m1s

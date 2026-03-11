@@ -10,7 +10,7 @@ functions:
   customer-processor-capacity:
     lang: python3-http
     handler: ./customer-processor
-    image: ${OPENFAAS_PREFIX:-ttl.sh/alexellis}/customer-processor-capacity:${OPENFAAS_TAG:-latest}
+    image: ${SERVER:-ttl.sh}/${OWNER:-alexellis}/customer-processor-capacity:${TAG:-latest}
     environment:
       max_inflight: "1"
       ready_path: /ready
@@ -32,7 +32,7 @@ functions:
   customer-processor-queue:
     lang: python3-http
     handler: ./customer-processor
-    image: ${OPENFAAS_PREFIX:-ttl.sh/alexellis}/customer-processor-queue:${OPENFAAS_TAG:-latest}
+    image: ${SERVER:-ttl.sh}/${OWNER:-alexellis}/customer-processor-queue:${TAG:-latest}
     environment:
       max_inflight: "1"
       ready_path: /ready

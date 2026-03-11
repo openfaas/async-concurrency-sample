@@ -31,13 +31,15 @@ The sample function processes one customer record, and refuses concurrent work.
 `stack.yml` uses OpenFaaS YAML env-substitution:
 
 - `provider.gateway: ${OPENFAAS_URL}`
-- `image: ${OPENFAAS_PREFIX:-ttl.sh/alexellis}/customer-processor:${OPENFAAS_TAG}`
+- `image: ${SERVER:-ttl.sh}/${OWNER:-alexellis}/customer-processor:${TAG:-latest}`
 
 Set these before deploy:
 
 ```bash
 export OPENFAAS_URL="https://your-gateway.example.com"
-export OPENFAAS_PREFIX="ttl.sh/alexellis"
+export SERVER="ttl.sh"
+export OWNER="alexellis"
+export TAG="latest"
 ```
 
 ## Publish and deploy
